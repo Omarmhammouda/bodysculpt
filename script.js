@@ -93,10 +93,16 @@
           body: JSON.stringify(payload)
         });
         const json = await res.json().catch(() => ({}));
-        if (!res.ok || String(json.success) === 'false') throw new Error(json.message || 'Request failed');
+        const msg = String(json.message || '');
+        // FormSubmit's one-time activation reply: the request reached the service and an
+        // "Activate Form" email was sent to the inbox. Treat it as received for the visitor.
+        const needsActivation = /activat/i.test(msg);
+        if (needsActivation) console.warn('FormSubmit: inbox must activate the form first —', msg);
+        if (!needsActivation && (!res.ok || String(json.success) === 'false')) throw new Error(msg || 'Request failed');
       }
       showDone(name.split(' ')[0]);
     } catch (err) {
+      console.error('Consultation form error:', err);
       btn.disabled = false;
       status.textContent = 'Something went wrong sending your request. Please try again, or message @bodysculpt on Instagram.';
     }
