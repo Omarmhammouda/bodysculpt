@@ -48,7 +48,7 @@
           <a class="btn btn--primary" href="#consultation">Request a private consultation <span class="btn__dot"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h11.5M8 2.5 12.5 7 8 11.5"/></svg></span></a>
           <a class="btn btn--secondary" href="#practice">The practice <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h11.5M8 2.5 12.5 7 8 11.5"/></svg></a>
         </div>
-        <p class="fineprint">Discretion assured &nbsp;·&nbsp; Response within one business day</p>
+        <p class="fineprint">Discretion assured &nbsp;·&nbsp; We’ll contact you within 24 hours</p>
       </div>
       <figure class="hero__media">
         <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_361bOooZWFnyfstY5mWzxToJwsj/77fcbc94-a536-486a-91fb-f5f0070111a3.jpg" alt="Coach Naima El Jaouhari seated on a studio stool, smiling over her shoulder" width="1400" height="1738" fetchpriority="high">
@@ -112,7 +112,7 @@
       <div class="consult__intro">
         <p class="eyebrow">Private consultation</p>
         <h2 class="h2">Begin with<br>a <em>conversation.</em></h2>
-        <p>Share a little about yourself and the best way to reach you. Every inquiry is read personally and answered within one business day.</p>
+        <p>Share a little about yourself and the best way to reach you. Every inquiry is read personally and answered within 24 hours.</p>
         <ul class="assurances">
           <li>Your details are never shared or stored beyond our conversation.</li>
           <li>Assistants and representatives are welcome to inquire on a client’s behalf.</li>
@@ -120,8 +120,10 @@
         </ul>
       </div>
 
-      <!-- Set data-endpoint to your form service URL (e.g. https://formspree.io/f/xxxx) to receive inquiries by email. -->
-      <form class="form" id="consult-form" data-endpoint="" novalidate>
+      <!-- Submissions are emailed to Naima via FormSubmit (formsubmit.co). -->
+      <form class="form" id="consult-form" data-endpoint="https://formsubmit.co/ajax/naimaeljaouhari1@gmail.com" novalidate>
+        <!-- Spam trap: hidden from people, bots fill it in -->
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <fieldset class="field field--choice">
           <legend>I am inquiring</legend>
           <div class="segmented">
@@ -165,10 +167,20 @@
         <label class="check"><input type="checkbox" name="nda" value="yes"><span>Please send a confidentiality agreement before our call.</span></label>
 
         <div class="form__submit">
-          <p class="fineprint">Response within one business day.</p>
+          <p class="fineprint">We’ll contact you within 24 hours.</p>
           <button class="btn btn--primary" type="submit">Request consultation <span class="btn__dot"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h11.5M8 2.5 12.5 7 8 11.5"/></svg></span></button>
         </div>
         <p class="form__status" role="status" aria-live="polite"></p>
+
+        <!-- Confirmation screen, shown after a successful submission -->
+        <div class="form__done" id="form-done" hidden>
+          <span class="done__mark" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M6 14.5 11.5 20 22 8.5"/></svg></span>
+          <p class="eyebrow">Request received</p>
+          <h3 class="done__title" tabindex="-1">Thank you<span class="done__name"></span>.</h3>
+          <p class="done__lead">We’ll contact you within <em>24 hours</em> to arrange your private consultation.</p>
+          <p class="done__note">Keep an eye on your phone and inbox. If you asked for a confidentiality agreement, it will arrive before our call.</p>
+          <a class="btn btn--secondary" href="#top">Back to top <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h11.5M8 2.5 12.5 7 8 11.5"/></svg></a>
+        </div>
       </form>
     </section>
   </main>
@@ -184,7 +196,7 @@
 
   <!-- Sticky booking bar (mobile). Hides itself once the form is on screen. -->
   <div class="sticky-cta" id="sticky-cta">
-    <div class="sticky-cta__meta"><span>Private consultation</span><span class="live">Reply in 1 business day</span></div>
+    <div class="sticky-cta__meta"><span>Private consultation</span><span class="live">Reply within 24 hours</span></div>
     <a class="btn btn--primary btn--block" href="#consultation">Request a consultation <span class="btn__dot"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14"><path d="M1 7h11.5M8 2.5 12.5 7 8 11.5"/></svg></span></a>
   </div>
 

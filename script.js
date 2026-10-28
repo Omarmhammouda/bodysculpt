@@ -30,6 +30,18 @@
   const form = document.getElementById('consult-form');
   if (!form) return;
   const status = form.querySelector('.form__status');
+  const done = document.getElementById('form-done');
+
+  function showDone(firstName) {
+    status.textContent = '';
+    form.classList.add('is-sent');
+    if (done) {
+      done.querySelector('.done__name').textContent = firstName ? ', ' + firstName : '';
+      done.hidden = false;
+      document.getElementById('consultation').scrollIntoView({ block: 'start' });
+      done.querySelector('.done__title').focus({ preventScroll: true });
+    }
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -47,8 +59,27 @@
     }
 
     const data = new FormData(form);
-    const payload = Object.fromEntries(data.entries());
-    payload.focus = data.getAll('focus').join(', ');
+    // Spam trap filled in? Quietly pretend it worked.
+    if ((data.get('_honey') || '').trim()) { showDone(''); return; }
+
+    const name = (data.get('name') || '').trim();
+    const focus = data.getAll('focus').join(', ');
+    // Readable email for Naima (FormSubmit renders this as a table)
+    const payload = {
+      'Name': name,
+      'Email': (data.get('email') || '').trim(),
+      'Phone': (data.get('phone') || '').trim() || '—',
+      'Inquiring as': data.get('inquiring_as') || '—',
+      'Best time to reach': (data.get('best_time') || '').trim() || '—',
+      'Preferred setting': data.get('setting') || '—',
+      'Primary focus': focus || '—',
+      'Notes': (data.get('notes') || '').trim() || '—',
+      'Wants confidentiality agreement': data.get('nda') ? 'Yes' : 'No',
+      _subject: `New consultation request — ${name}`,
+      _replyto: (data.get('email') || '').trim(),
+      _template: 'table',
+      _captcha: 'false'
+    };
     const endpoint = form.dataset.endpoint;
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
@@ -61,14 +92,13 @@
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error('Request failed');
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || String(json.success) === 'false') throw new Error(json.message || 'Request failed');
       }
-      form.classList.add('is-sent');
-      const first = (payload.name || '').trim().split(' ')[0];
-      status.textContent = `Thank you${first ? ', ' + first : ''}. Your request is in — Naima will be in touch within one business day.`;
+      showDone(name.split(' ')[0]);
     } catch (err) {
       btn.disabled = false;
-      status.textContent = 'Something went wrong sending your request. Please try again, or reach out on Instagram @bodysculpt.';
+      status.textContent = 'Something went wrong sending your request. Please try again, or message @bodysculpt on Instagram.';
     }
   });
 })();
